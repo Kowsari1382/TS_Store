@@ -1,0 +1,31 @@
+{
+  "name": "clean-architecture",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kowsari",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mssql": "^9.1.1",
+    "multer": "^2.1.0",
+    "zarinpal-node-sdk": "^2.2.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mssql": "^9.1.11",
+    "@types/multer": "^2.1.0"
+  },
+  "type": "module"
+}
