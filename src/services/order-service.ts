@@ -1,9 +1,7 @@
-import { CartRepository } from "../repositories/cart-repository.js";
-import { OrderRepository } from "../repositories/order-repository.js";
-import { ProductRepository } from "../repositories/product-repository.js";
-import { CartService } from "./cart-service.js";
-import { ProductService } from "./product-service.js";
 import ZarinPal from "zarinpal-node-sdk";
+import type { OrderRepository } from "../repositories/order-repository.js";
+import type { CartRepository } from "../repositories/cart-repository.js";
+import type { ProductRepository } from "../repositories/product-repository.js";
 
 const zarinPal = new ZarinPal.default({
     merchantId: "",
@@ -12,7 +10,10 @@ const zarinPal = new ZarinPal.default({
 })
 
 export class OrderService {
-    constructor(private readonly orderRepository: OrderRepository) { }
+    constructor(private readonly orderRepository: OrderRepository,
+        private readonly cartRepository: CartRepository,
+        private readonly productRepository: ProductRepository
+    ) { }
 
     public async findAll() {
         return await this.orderRepository.findAll()
@@ -27,19 +28,15 @@ export class OrderService {
     }
 
     public async Add(userid: number) {
-        const cartRepository = new CartRepository()
-        const cartService = new CartService(cartRepository)
-        const productRepository = new ProductRepository()
-        const productService = new ProductService(productRepository)
-        const userCart = await cartService.findByUserID(userid)
+        const userCart = await this.cartRepository.findByUserID(userid)
         if (!userCart || userCart.length === 0) return { Status: 400, Message: "There is not cart for this user." }
-        const totalPrice = await cartService.findTotalPrice(userid)
+        const totalPrice = await this.cartRepository.findTotalPrice(userid)
         //Payment is here
         await this.orderRepository.AddForUser(userid)
-        await cartService.Reset(userid)
-        await cartService.Clean()
-        await productService.Reset(userid)
-        await cartService.DeleteByUserID(userid)
+        await this.cartRepository.Reset(userid)
+        await this.cartRepository.Clean()
+        await this.productRepository.Reset(userid)
+        await this.cartRepository.DeleteByUserID(userid)
         return { Status: 200, Message: "Adding was successful." }
     }
 

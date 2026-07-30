@@ -1,11 +1,12 @@
-import { CartRepository } from "../repositories/cart-repository.js";
-import { ProductRepository } from "../repositories/product-repository.js";
-import { UserRepository } from "../repositories/user-repository.js";
-import { ProductService } from "./product-service.js";
-import { UserService } from "./user-service.js";
+import type { CartRepository } from "../repositories/cart-repository.js"
+import type { ProductRepository } from "../repositories/product-repository.js"
+import type { UserRepository } from "../repositories/user-repository.js"
 
 export class CartService {
-    constructor(private readonly cartRepository: CartRepository) { }
+    constructor(private readonly cartRepository: CartRepository,
+        private readonly productRepository: ProductRepository,
+        private readonly userRepository: UserRepository
+    ) { }
 
     public async findAll() {
         return await this.cartRepository.findAll()
@@ -28,13 +29,9 @@ export class CartService {
     }
 
     public async Add(cartInfo: any) {
-        const userRepository = new UserRepository()
-        const userService = new UserService(userRepository)
-        const productRepository = new ProductRepository()
-        const productService = new ProductService(productRepository)
-        const user = await userService.findByID(cartInfo.UserID)
+        const user = await this.userRepository.findByID(cartInfo.UserID)
         if (!user || user.length === 0) return { Status: 400, Message: "User does not exist." }
-        const product = await productService.findByID(cartInfo.ProductID)
+        const product = await this.productRepository.findByID(cartInfo.ProductID)
         if (!product || product.length === 0) return { Status: 400, Message: "Product does not exist." }
         if (parseInt(product[0].Stock) < parseInt(cartInfo.Number)) return { Status: 400, Message: "There is not enough product." }
         const userCart = await this.cartRepository.findByUserProductID(cartInfo.UserID, cartInfo.ProductID)
@@ -51,13 +48,9 @@ export class CartService {
     }
 
     public async Update(cartInfo: any) {
-        const userRepository = new UserRepository()
-        const userService = new UserService(userRepository)
-        const productRepository = new ProductRepository()
-        const productService = new ProductService(productRepository)
-        const user = await userService.findByID(cartInfo.UserID)
+        const user = await this.userRepository.findByID(cartInfo.UserID)
         if (!user || user.length === 0) return { Status: 400, Message: "User does not exist." }
-        const product = await productService.findByID(cartInfo.ProductID)
+        const product = await this.productRepository.findByID(cartInfo.ProductID)
         if (!product || product.length === 0) return { Status: 400, Message: "Product does not exist." }
         const userCart = await this.cartRepository.findByUserProductID(cartInfo.UserID, cartInfo.ProductID)
         if (!userCart || userCart.length === 0) return {Status: 400, Message: "There is not this cart for user."}
@@ -70,13 +63,9 @@ export class CartService {
     }
 
     public async Minus(cartInfo: any) {
-        const userRepository = new UserRepository()
-        const userService = new UserService(userRepository)
-        const productRepository = new ProductRepository()
-        const productService = new ProductService(productRepository)
-        const user = await userService.findByID(cartInfo.UserID)
+        const user = await this.userRepository.findByID(cartInfo.UserID)
         if (!user || user.length === 0) return { Status: 400, Message: "User does not exist." }
-        const product = await productService.findByID(cartInfo.ProductID)
+        const product = await this.productRepository.findByID(cartInfo.ProductID)
         if (!product || product.length === 0) return { Status: 400, Message: "Product does not exist." }
         const userCart = await this.cartRepository.findByUserProductID(cartInfo.UserID, cartInfo.ProductID)
         if (!userCart || userCart.length === 0) return { Status: 400, Message: "This cart does not exist." }
@@ -89,31 +78,23 @@ export class CartService {
     }
 
     public async Delete(cartInfo: any) {
-        const userRepository = new UserRepository()
-        const userService = new UserService(userRepository)
-        const productRepository = new ProductRepository()
-        const productService = new ProductService(productRepository)
-        const user = await userService.findByID(cartInfo.UserID)
+        const user = await this.userRepository.findByID(cartInfo.UserID)
         if (!user || user.length === 0) return { Status: 400, Message: "User does not exist." }
-        const product = await productService.findByID(cartInfo.ProductID)
+        const product = await this.productRepository.findByID(cartInfo.ProductID)
         if (!product || product.length === 0) return { Status: 400, Message: "Product does not exist." }
         await this.cartRepository.Delete(cartInfo.UserID, cartInfo.ProductID)
         return { Status: 200, Message: "Delete was successful." }
     }
 
     public async DeleteByUserID(userid: number) {
-        const userRepository = new UserRepository()
-        const userService = new UserService(userRepository)
-        const user = await userService.findByID(userid)
+        const user = await this.userRepository.findByID(userid)
         if (!user || user.length === 0) return { Status: 400, Message: "User does not exist." }
         await this.cartRepository.DeleteByUserID(userid)
         return { Status: 200, Message: "Delete was successful." }
     }
 
     public async DeleteByProductID(productid: number) {
-        const productRepository = new ProductRepository()
-        const productService = new ProductService(productRepository)
-        const product = await productService.findByID(productid)
+        const product = await this.productRepository.findByID(productid)
         if (!product || product.length === 0) return { Status: 400, Message: "Product does not exist." }
         await this.cartRepository.DeleteByProductID(productid)
         return { Status: 200, Message: "Delete was successful." }

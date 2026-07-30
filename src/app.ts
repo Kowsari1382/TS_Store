@@ -39,31 +39,32 @@ app.use(express.urlencoded({ extended: true }));
 
 //users
 const userRepository = new UserRepository();
-const userService = new UserService(userRepository);
+const cartRepository = new CartRepository();
+
+const userService = new UserService(userRepository, cartRepository);
 const userController = new UserController(userService);
 app.use("/api/user", users(userController));
 
 //products
 const productRepository = new ProductRepository();
-const productService = new ProductService(productRepository);
+const productService = new ProductService(productRepository, cartRepository);
 const productController = new ProductController(productService);
 app.use("/api/product", products(productController));
 
 //carts
-const cartRepository = new CartRepository();
-const cartService = new CartService(cartRepository);
+const cartService = new CartService(cartRepository, productRepository, userRepository);
 const cartController = new CartController(cartService);
 app.use("/api/cart", carts(cartController));
 
 //orders
 const orderRepository = new OrderRepository();
-const orderService = new OrderService(orderRepository);
+const orderService = new OrderService(orderRepository, cartRepository, productRepository);
 const orderController = new OrderController(orderService);
 app.use("/api/order", orders(orderController));
 
 //ideas
 const ideaRepository = new IdeaRepository();
-const ideaService = new IdeaService(ideaRepository);
+const ideaService = new IdeaService(ideaRepository, productRepository, userRepository);
 const ideaController = new IdeaController(ideaService);
 app.use("/api/idea", ideas(ideaController));
 

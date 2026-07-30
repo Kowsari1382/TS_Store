@@ -1,14 +1,15 @@
-import { UserRepository } from "../repositories/user-repository.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
-import { CartRepository } from "../repositories/cart-repository.js";
-import { CartService } from "./cart-service.js";
 import dotenv from "dotenv";
+import type { UserRepository } from "../repositories/user-repository.js";
+import type { CartRepository } from "../repositories/cart-repository.js";
 dotenv.config()
 
 export class UserService {
 
-    constructor(private readonly userRepository: UserRepository) { }
+    constructor(private readonly userRepository: UserRepository,
+        private readonly cartRepository: CartRepository
+    ) { }
 
     public async findAll() {
         return await this.userRepository.findAll();
@@ -78,9 +79,7 @@ export class UserService {
         const user = await this.userRepository.findByID(id)
         if (!user || user.length === 0) return { Status: 400, Message: "User does not exist." }
         await this.userRepository.Delete(id)
-        const cartRepository = new CartRepository()
-        const cartService = new CartService(cartRepository)
-        await cartService.DeleteByUserID(id)
+        await this.cartRepository.DeleteByUserID(id)
         await this.userRepository.DeleteAvatar(id)
         return { Status: 200, Message: "Delete was successful." }
     }

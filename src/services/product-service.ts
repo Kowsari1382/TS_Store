@@ -1,10 +1,11 @@
-import { CartRepository } from "../repositories/cart-repository.js";
-import { ProductRepository } from "../repositories/product-repository.js";
-import { CartService } from "./cart-service.js";
 import fs from "fs";
+import type { ProductRepository } from "../repositories/product-repository.js";
+import type { CartRepository } from "../repositories/cart-repository.js";
 
 export class ProductService {
-    constructor(private readonly productRepository: ProductRepository) { }
+    constructor(private readonly productRepository: ProductRepository,
+        private readonly cartRepository: CartRepository
+    ) { }
 
     public async findAll() {
         return await this.productRepository.findAll()
@@ -65,9 +66,7 @@ export class ProductService {
         const product = await this.productRepository.findByID(id)
         if (!product || product.length === 0) return { Status: 400, Message: "Product does not exist." }
         await this.productRepository.Delete(id)
-        const cartRepository = new CartRepository()
-        const cartService = new CartService(cartRepository)
-        await cartService.DeleteByProductID(id)
+        await this.cartRepository.DeleteByProductID(id)
         await this.productRepository.DeleteImgs(id)
         return { Status: 200, Message: "Delete was successful." }
     }
