@@ -2,7 +2,7 @@ import express from "express";
 import { UserController } from "../controllers/user-controller.js";
 import { CheckAuth } from "../middlewares/CheckAuth.js";
 import { CheckAdmin } from "../middlewares/CheckAdmin.js";
-import { image } from "../utilities/mulccccccter.js";
+import { image } from "../utilities/multer.js";
 const router = express.Router();
 
 export const users = (controller: UserController) => {
