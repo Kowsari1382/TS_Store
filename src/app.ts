@@ -37,35 +37,32 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//users
+//repositories
 const userRepository = new UserRepository();
-const cartRepository = new CartRepository();
-
-const userService = new UserService(userRepository, cartRepository);
-const userController = new UserController(userService);
-app.use("/api/user", users(userController));
-
-//products
 const productRepository = new ProductRepository();
-const productService = new ProductService(productRepository, cartRepository);
-const productController = new ProductController(productService);
-app.use("/api/product", products(productController));
-
-//carts
-const cartService = new CartService(cartRepository, productRepository, userRepository);
-const cartController = new CartController(cartService);
-app.use("/api/cart", carts(cartController));
-
-//orders
+const cartRepository = new CartRepository();
 const orderRepository = new OrderRepository();
-const orderService = new OrderService(orderRepository, cartRepository, productRepository);
-const orderController = new OrderController(orderService);
-app.use("/api/order", orders(orderController));
-
-//ideas
 const ideaRepository = new IdeaRepository();
+
+//services
+const userService = new UserService(userRepository, cartRepository);
+const productService = new ProductService(productRepository, cartRepository);
+const cartService = new CartService(cartRepository, productRepository, userRepository);
+const orderService = new OrderService(orderRepository, cartRepository, productRepository);
 const ideaService = new IdeaService(ideaRepository, productRepository, userRepository);
+
+//controllers
+const userController = new UserController(userService);
+const productController = new ProductController(productService);
+const cartController = new CartController(cartService);
+const orderController = new OrderController(orderService);
 const ideaController = new IdeaController(ideaService);
+
+//routes
+app.use("/api/user", users(userController));
+app.use("/api/product", products(productController));
+app.use("/api/cart", carts(cartController));
+app.use("/api/order", orders(orderController));
 app.use("/api/idea", ideas(ideaController));
 
 app.use(NotFound);
