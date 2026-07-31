@@ -1,67 +1,75 @@
-# 🛒 TS_Store - TypeScript E-Commerce API
+# 🛒 TS_Store - E-commerce API with TypeScript & Express.js
 
-A professional, production-ready REST API for an online store built with **TypeScript**, **Express.js 5**, and **SQL Server**. This project represents a significant upgrade from the original JavaScript version, implementing a **clean layered architecture** with full type safety, modern validation, and robust error handling.
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
+[![License](https://img.shields.io/badge/License-ISC-green.svg?style=for-the-badge)](LICENSE)
+
+A professional, secure, and production-ready RESTful API for an e-commerce platform, built with **TypeScript**, **Express.js 5**, and **SQL Server**. This project is a modern, robust rewrite of classic JavaScript implementations, featuring **Clean Layered Architecture**, full type safety, modern schema validation, and powerful error handling.
+
+---
 
 ## 📋 Table of Contents
+- [✨ Features](#-features)
+- [🏛️ Project Architecture](#️-project-architecture)
+- [🛠 Tech Stack](#-tech-stack)
+- [📦 Prerequisites](#-prerequisites)
+- [🚀 Installation & Setup](#-installation--setup)
+- [📁 Project Structure](#-project-structure)
+- [📚 API Documentation](#-api-documentation)
+- [🔒 Security Features](#-security-features)
+- [🤝 Contributing](#-contributing)
+- [📝 License](#-license)
 
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Technologies Used](#-technologies-used)
-- [Prerequisites](#-prerequisites)
-- [Installation](#-installation)
-- [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
-- [Environment Variables](#-environment-variables)
-- [Security Features](#-security-features)
-- [Contributing](#-contributing)
-- [License](#-license)
+---
 
 ## ✨ Features
 
 ### 🏗️ Clean Layered Architecture
-- **Controllers**: Handle HTTP requests and responses
-- **Services**: Business logic layer
-- **Repositories**: Data access layer with SQL Server
-- **Models**: Type-safe data structures
-- **Dependency Injection**: Loose coupling between layers
+- **Controllers**: Handle HTTP requests and responses.
+- **Services**: Encapsulate core business logic.
+- **Repositories**: Manage data access and database queries.
+- **Models**: Strict, type-safe data structures.
+- **Dependency Injection**: Decoupled layers for maximum testability and maintainability.
 
 ### 👤 User Management
-- User registration with avatar upload
-- JWT-based authentication
-- Role-based access control (Admin/User)
-- Profile management with avatar support
-- Secure password hashing with bcrypt
+- User registration with avatar upload support.
+- Secure JWT-based authentication.
+- Role-Based Access Control (RBAC) for Admin/User roles.
+- Profile management with avatar updates.
+- Secure password hashing using `bcrypt`.
 
 ### 📦 Product Management
-- Full CRUD operations for products
-- Multi-image support with pagination
-- Product attributes and categories
-- Search by name, ID, or category
-- Product scoring system
-- Stock management
+- Full CRUD operations for products.
+- Support for multiple product images with pagination.
+- Product attributes, categories, and inventory/stock management.
+- Advanced search by name, ID, or category.
+- Rating and review system.
 
 ### 🛒 Shopping Cart
-- Add/remove products from cart
-- Quantity management (increase/decrease)
-- Real-time total price calculation
-- User-specific cart management
+- Add/remove products to/from the cart.
+- Dynamic quantity management (increment/decrement).
+- Real-time total price calculation.
+- User-specific cart isolation.
 
-### 💳 Order & Payment
-- Order placement and management
-- **Zarinpal** payment gateway integration
-- Payment verification callback
-- Order history tracking
+### 💳 Orders & Payment
+- Comprehensive order creation and management.
+- Seamless integration with the **Zarinpal** payment gateway.
+- Payment callback verification.
+- Order history tracking for users.
 
-### 💬 Reviews & Ideas
-- Product reviews and ratings
-- User-specific review management
-- Product-specific review queries
+### 💬 Comments & Reviews
+- Submit ratings and reviews for products.
+- User-owned review management.
+- Fetch product-specific reviews.
 
-## 🏛️ Architecture
+---
 
-This project follows a **clean layered architecture** pattern, ensuring separation of concerns and maintainability:
+## 🏛️ Project Architecture
 
-```
+This project strictly follows the **Clean Layered Architecture** pattern to ensure Separation of Concerns (SoC) and high code maintainability:
+
+```text
 ┌─────────────────────────────────────────┐
 │           HTTP Request                  │
 └──────────────────┬──────────────────────┘
@@ -75,7 +83,7 @@ This project follows a **clean layered architecture** pattern, ensuring separati
                    ▼
 ┌─────────────────────────────────────────┐
 │         Controller Layer                │
-│  (Request validation, Response format)  │
+│  (Request validation, Response formatting)│
 └──────────────────┬──────────────────────┘
                    │
                    ▼
@@ -87,7 +95,7 @@ This project follows a **clean layered architecture** pattern, ensuring separati
                    ▼
 ┌─────────────────────────────────────────┐
 │        Repository Layer                 │
-│    (Database queries, Data access)      │
+│    (Database Queries, Data Access)      │
 └──────────────────┬──────────────────────┘
                    │
                    ▼
@@ -96,349 +104,191 @@ This project follows a **clean layered architecture** pattern, ensuring separati
 └─────────────────────────────────────────┘
 ```
 
-### Key Architectural Patterns
+---
 
-| Pattern | Implementation |
-|---------|----------------|
-| **Dependency Injection** | Services receive repositories via constructor |
-| **Repository Pattern** | Data access abstracted from business logic |
-| **Controller-Service Separation** | HTTP concerns separated from business rules |
-| **Middleware Chain** | Authentication and authorization handled before controllers |
-| **Try-Catch Wrapper** | Centralized error handling with `TryCatchController` |
-
-## 🛠 Technologies Used
+## 🛠 Tech Stack
 
 | Technology | Version | Purpose |
-|------------|---------|---------|
-| **TypeScript** | Latest | Type-safe JavaScript |
-| **Express.js** | ^5.2.1 | Web framework (latest version!) |
-| **MSSQL** | ^9.1.1 | SQL Server database driver |
-| **Zod** | ^4.3.6 | Schema validation (modern alternative to Joi) |
-| **JWT** | ^9.0.3 | Authentication tokens |
-| **Bcrypt** | ^6.0.0 | Password hashing |
-| **Multer** | ^2.1.0 | File upload handling |
-| **Zarinpal SDK** | ^2.2.0 | Payment gateway |
-| **Express Rate Limit** | ^8.2.1 | API rate limiting |
-| **dotenv** | ^17.3.1 | Environment variables |
+|---|---|---|
+| **TypeScript** | Latest | Typed JavaScript for safety and scalability |
+| **Express.js** | ^5.x | Modern, minimal web framework |
+| **MSSQL** | ^9.x | Official Microsoft SQL Server driver for Node.js |
+| **Zod** | ^4.x | High-performance schema validation (modern alternative to Joi) |
+| **JWT** | ^9.x | JSON Web Tokens for stateless authentication |
+| **Bcrypt** | ^6.x | Secure password hashing |
+| **Multer** | ^2.x | Middleware for handling `multipart/form-data` (file uploads) |
+| **Zarinpal SDK** | ^2.x | Official SDK for Zarinpal payment gateway |
+| **Express Rate Limit** | ^8.x | API rate limiting to prevent abuse |
+| **dotenv** | ^17.x | Environment variable management |
 
-### TypeScript Configuration Highlights
-
-The project uses **strict TypeScript** with advanced options:
-
-```json
-{
-  "strict": true,
-  "noUncheckedIndexedAccess": true,
-  "exactOptionalPropertyTypes": true,
-  "verbatimModuleSyntax": true,
-  "isolatedModules": true,
-  "module": "nodenext",
-  "target": "esnext"
-}
-```
+---
 
 ## 📦 Prerequisites
 
-Before running this project, ensure you have:
-
-- [Node.js](https://nodejs.org/) (version 18 or higher)
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (2019 or later)
+Ensure you have the following installed on your system before running the project:
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server) (2019 or higher)
 - [Git](https://git-scm.com/)
-- [TypeScript](https://www.typescriptlang.org/) (installed globally or via npm)
 
-## 🚀 Installation
+---
+
+## 🚀 Installation & Setup
 
 ### 1. Clone the Repository
-
 ```bash
 git clone https://github.com/Kowsari1382/TS_Store.git
 cd TS_Store
 ```
 
 ### 2. Install Dependencies
-
 ```bash
 npm install
 ```
 
-### 3. Set Up Database
+### 3. Database Setup
+1. Open SQL Server Management Studio (SSMS).
+2. Attach the provided database file (`Shop.mdf`) to your local SQL Server instance.
+3. *(Optional)* You can also create the database manually using the provided schema scripts.
 
-1. Open SQL Server Management Studio (SSMS)
-2. Attach the provided `Shop.mdf` database file
-3. Or create the database manually using the schema
-
-### 4. Configure Environment Variables
-
-Create a `.env` file in the project root:
-
+### 4. Environment Variables
+Create a `.env` file in the root directory and configure it with your local settings:
 ```env
-Port=3000
-Domain=localhost
+PORT=3000
+DOMAIN=localhost
 DB_SERVER=localhost
 DB_DATABASE=Shop
-DB_USER=your_username
-DB_PASSWORD=your_password
-ZARINPAL_MERCHANT_ID=your_merchant_id
+DB_USER=your_sql_username
+DB_PASSWORD=your_sql_password
+ZARINPAL_MERCHANT_ID=your_zarinpal_merchant_id
 ```
 
 ### 5. Build and Run
-
 ```bash
-# Build TypeScript to JavaScript
+# Compile TypeScript to JavaScript
 npx tsc
 
-# Start the server
+# Start the production server
 npm start
 ```
+> 💡 **Development Tip:** For auto-reloading during development, use `tsx` or `ts-node-dev`:
+> ```bash
+> npx tsx src/app.ts
+> ```
 
-Or for development with auto-reload (recommended to install `tsx` or `ts-node-dev`):
+The server will be running at `http://localhost:3000`.
 
-```bash
-npx tsx src/app.ts
-```
-
-The server will start on `http://localhost:3000`
+---
 
 ## 📁 Project Structure
 
-```
+```text
 TS_Store/
 ├── src/
-│   ├── app.ts                      # Application entry point
+│   ├── app.ts                      # Main application entry point
 │   ├── controllers/                # HTTP request handlers
-│   │   ├── user-controller.ts
-│   │   ├── product-controller.ts
-│   │   ├── cart-controller.ts
-│   │   ├── order-controller.ts
-│   │   └── idea-controller.ts
 │   ├── services/                   # Business logic layer
-│   │   ├── user-service.ts
-│   │   ├── product-service.ts
-│   │   ├── cart-service.ts
-│   │   ├── order-service.ts
-│   │   └── idea-service.ts
-│   ├── repositories/               # Data access layer
-│   │   ├── user-repository.ts
-│   │   ├── product-repository.ts
-│   │   ├── cart-repository.ts
-│   │   ├── order-repository.ts
-│   │   └── idea-repository.ts
-│   ├── models/                     # Data models
-│   │   ├── user-model.ts
-│   │   ├── product-model.ts
-│   │   ├── cart-model.ts
-│   │   ├── order-model.ts
-│   │   └── idea-model.ts
+│   ├── repositories/               # Data access layer (SQL queries)
+│   ├── models/                     # Data structures (Types/Interfaces)
 │   ├── routes/                     # API route definitions
-│   │   ├── user-route.ts
-│   │   ├── product-route.ts
-│   │   ├── cart-route.ts
-│   │   ├── order-route.ts
-│   │   └── idea-route.ts
-│   ├── middlewares/                # Express middlewares
-│   │   ├── CheckAuth.ts           # JWT authentication
-│   │   ├── CheckAdmin.ts          # Admin role check
-│   │   ├── ErrorHandler.ts        # Global error handler
-│   │   └── NotFound.ts            # 404 handler
-│   └── utilities/                  # Helper functions
-│       ├── multer.ts              # File upload config
-│       └── TryCatchController.ts  # Error wrapper
-├── dist/                           # Compiled JavaScript (generated)
-├── public/                         # Static files (avatars, etc.)
+│   ├── middlewares/                # Auth, Error Handling, Rate Limiting
+│   └── utilities/                  # Helper functions (Multer config, TryCatch)
+├── dist/                           # Compiled JavaScript output
+├── public/                         # Static assets (e.g., uploaded avatars)
 ├── Shop.mdf                        # SQL Server database file
 ├── package.json
 ├── tsconfig.json
 └── .env                            # Environment variables (create this)
 ```
 
+---
+
 ## 📚 API Documentation
 
-### 🔐 Authentication
-
-All protected endpoints require a JWT token in the `Authorization` header:
-
-```
+All protected routes require a valid JWT token in the `Authorization` header:
+```http
 Authorization: Bearer <your-jwt-token>
 ```
 
-### 👥 Users API (`/api/user`)
-
+### 👥 Users (`/api/user`)
 | Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| POST | `/register` | Register new user (with avatar) | Public |
-| POST | `/login` | User login | Public |
-| GET | `/all` | Get all users | Admin |
-| GET | `/id/:id` | Get user by ID | Authenticated |
-| GET | `/name/:username` | Get user by username | Authenticated |
-| GET | `/avatar/:id` | Get user avatar | Authenticated |
-| POST | `/add` | Add user (Admin) | Admin |
-| PUT | `/update` | Update user (Admin) | Admin |
-| PUT | `/edit` | Edit own profile | Authenticated |
-| DELETE | `/delete/:id` | Delete user | Authenticated |
-| DELETE | `/deleteavatar/:id` | Delete avatar | Authenticated |
+|---|---|---|---|
+| `POST` | `/register` | Register a new user (with avatar) | Public |
+| `POST` | `/login` | User login | Public |
+| `GET` | `/all` | Get list of all users | Admin |
+| `GET` | `/id/:id` | Get user details by ID | Authenticated |
+| `PUT` | `/edit` | Update user profile | Authenticated |
 
-### 📦 Products API (`/api/product`)
-
+### 📦 Products (`/api/product`)
 | Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| GET | `/all` | Get all products | Public |
-| GET | `/id/:id` | Get product by ID | Public |
-| GET | `/name/:productname` | Search by name | Public |
-| GET | `/category/:category` | Filter by category | Public |
-| GET | `/attr/:id` | Get product attributes | Public |
-| GET | `/imginfo/:id` | Get product images info | Public |
-| GET | `/img/:id/:pagenumber` | Get images (paginated) | Public |
-| POST | `/add` | Add product | Admin |
-| POST | `/addimg` | Add product image | Admin |
-| PUT | `/update` | Update product | Admin |
-| PUT | `/updateimg` | Update product image | Admin |
-| PUT | `/score` | Update product score | Admin |
-| DELETE | `/delete/:id` | Delete product | Admin |
-| DELETE | `/deleteimg/:productid/:pagenumber` | Delete image | Admin |
+|---|---|---|---|
+| `GET` | `/all` | Get all products (with pagination) | Public |
+| `GET` | `/name/:productname` | Search products by name | Public |
+| `POST` | `/add` | Add a new product | Admin |
+| `PUT` | `/update` | Update product details | Admin |
+| `DELETE` | `/delete/:id` | Delete a product | Admin |
 
-### 🛒 Cart API (`/api/cart`)
-
+### 🛒 Shopping Cart (`/api/cart`)
 | Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| GET | `/all` | Get all carts | Admin |
-| GET | `/userid/:userid` | Get user's cart | Authenticated |
-| GET | `/totalprice/:userid` | Get cart total | Authenticated |
-| POST | `/add` | Add to cart | Authenticated |
-| PUT | `/plus` | Increase quantity | Authenticated |
-| PUT | `/minus` | Decrease quantity | Authenticated |
-| DELETE | `/delete/:userid` | Clear cart | Authenticated |
+|---|---|---|---|
+| `GET` | `/userid/:userid` | Get user's shopping cart | Authenticated |
+| `POST` | `/add` | Add product to cart | Authenticated |
+| `PUT` | `/plus` | Increase product quantity in cart | Authenticated |
+| `PUT` | `/minus` | Decrease product quantity in cart | Authenticated |
 
-### 💳 Orders API (`/api/order`)
-
+### 💳 Orders (`/api/order`)
 | Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| GET | `/all` | Get all orders | Admin |
-| GET | `/userid/:userid` | Get user's orders | Authenticated |
-| POST | `/add` | Place order | Authenticated |
-| POST | `/payment` | Start payment | Authenticated |
-| GET | `/verify` | Verify payment (callback) | Public |
-| PUT | `/update` | Update order | Admin |
-| DELETE | `/delete/:id` | Delete order | Admin |
+|---|---|---|---|
+| `GET` | `/userid/:userid` | Get user's order history | Authenticated |
+| `POST` | `/add` | Create a new order | Authenticated |
+| `POST` | `/payment` | Initiate Zarinpal payment | Authenticated |
+| `GET` | `/verify` | Verify payment callback | Public |
 
-### 💬 Ideas/Reviews API (`/api/idea`)
-
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| GET | `/all` | Get all reviews | Public |
-| GET | `/user/:userid` | Get user's reviews | Authenticated |
-| GET | `/product/:productid` | Get product reviews | Public |
-| POST | `/add` | Add review | Authenticated |
-| PUT | `/update` | Update review | Authenticated |
-| DELETE | `/delete/:id` | Delete review | Authenticated |
-
-## 🔧 Environment Variables
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `Port` | Server port | `3000` |
-| `Domain` | Server domain | `localhost` |
-| `DB_SERVER` | SQL Server address | `localhost` |
-| `DB_DATABASE` | Database name | `Shop` |
-| `DB_USER` | Database username | `sa` |
-| `DB_PASSWORD` | Database password | `YourPassword123` |
-| `ZARINPAL_MERCHANT_ID` | Zarinpal merchant ID | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
+---
 
 ## 🔒 Security Features
 
-### Authentication & Authorization
-- **JWT Tokens**: Secure, stateless authentication
-- **Password Hashing**: Bcrypt with salt rounds
-- **Role-Based Access**: Admin vs User permissions
-- **Protected Routes**: Middleware-based access control
+- **Authentication & Authorization**: JWT-based stateless auth, `bcrypt` password hashing, and strict Role-Based Access Control (RBAC).
+- **Input Validation**: `Zod` schema validation on all incoming requests to prevent injection attacks and ensure data integrity.
+- **API Protection**: Express Rate Limiting to mitigate brute-force and DDoS attempts, coupled with centralized error handling (`TryCatchController`).
+- **Data Security**: Parameterized SQL queries to completely prevent SQL Injection. File uploads are strictly validated and stored securely.
 
-### Input Validation
-- **Zod Schema Validation**: Type-safe request validation
-- **Sanitization**: Prevents injection attacks
-- **File Upload Validation**: Multer with file type/size checks
-
-### API Protection
-- **Rate Limiting**: Prevents abuse (configurable)
-- **Error Handling**: Centralized error responses
-- **CORS Ready**: Configurable cross-origin support
-
-### Data Security
-- **Parameterized Queries**: Prevents SQL injection
-- **Secure File Storage**: Avatars stored outside public directory
-- **Environment Variables**: Sensitive data not hardcoded
-
-## 🎯 Key Improvements from Original Store
-
-| Feature | Original (JS) | TS_Store (TypeScript) |
-|---------|---------------|----------------------|
-| **Type Safety** | ❌ None | ✅ Full TypeScript |
-| **Validation** | Joi | ✅ Zod (modern, faster) |
-| **Architecture** | Mixed concerns | ✅ Clean layered |
-| **Express Version** | 1.x (outdated) | ✅ 5.x (latest) |
-| **Error Handling** | Manual try-catch | ✅ TryCatchController wrapper |
-| **Dependency Injection** | ❌ Manual | ✅ Constructor injection |
-| **Code Organization** | Flat structure | ✅ Separated layers |
-| **Type Definitions** | ❌ None | ✅ Full type coverage |
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-### Development Guidelines
-
-- Follow TypeScript strict mode
-- Add validation schemas for all endpoints
-- Write meaningful commit messages
-- Test your changes before submitting
+---
 
 ## 📝 License
 
-This project is licensed under the ISC License.
+This project is distributed under the **ISC License**. See the [LICENSE](LICENSE) file for more information.
+
+---
 
 ## 👨‍💻 Author
 
-**Sajjad Kowsari**
-
+**Sajjad Kowsari**  
 - GitHub: [@Kowsari1382](https://github.com/Kowsari1382)
+
+---
 
 ## 📞 Support
 
 If you encounter any issues or have questions:
-
-1. Check the [Issues](https://github.com/Kowsari1382/TS_Store/issues) page
-2. Open a new issue if needed
-3. Contact the author
-
-## 🎓 Learning Outcomes
-
-This project demonstrates:
-
-- **TypeScript** best practices with strict configuration
-- **Clean Architecture** principles
-- **Dependency Injection** pattern
-- **Repository Pattern** for data access
-- **Modern Express.js 5** features
-- **Zod validation** for type-safe schemas
-- **JWT authentication** implementation
-- **File upload** handling with Multer
-- **Payment gateway** integration
-- **SQL Server** database operations
+1. Check the [Issues](https://github.com/Kowsari1382/TS_Store/issues) tab.
+2. Open a new issue with a detailed description of the problem.
+3. Feel free to reach out to the author directly.
 
 ---
 
-<div align="center">
-
-**Built with TypeScript, Express 5, and Clean Architecture 🚀**
-
-**If you find this project useful, please consider giving it a ⭐!**
-
-</div>
-
----
-
-This README reflects the professional, production-ready nature of your TypeScript migration. The clean architecture, modern tooling (Express 5, Zod), and strict TypeScript configuration show significant growth from the original JavaScript version! 🎉
+<p align="center">
+  <b>Built with ❤️, TypeScript, Express 5, and Clean Architecture 🚀</b><br>
+  <i>If you found this project helpful, please consider giving it a ⭐!</i>
+</p>
