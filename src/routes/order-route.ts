@@ -1,5 +1,5 @@
 import express from "express";
-import { OrderController } from "../controllers/order-controller.js";
+import { OrderController } from "../Order/order-controller.js";
 import { CheckAuth } from "../middlewares/CheckAuth.js";
 import { CheckAdmin } from "../middlewares/CheckAdmin.js";
 const router = express.Router()

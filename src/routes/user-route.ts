@@ -1,5 +1,5 @@
 import express from "express";
-import { UserController } from "../controllers/user-controller.js";
+import { UserController } from "../User/user-controller.js";
 import { CheckAuth } from "../middlewares/CheckAuth.js";
 import { CheckAdmin } from "../middlewares/CheckAdmin.js";
 import { image } from "../utilities/multer.js";
