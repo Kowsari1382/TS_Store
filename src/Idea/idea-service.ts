@@ -1,8 +1,9 @@
 import type { IdeaRepository } from "./idea-repository.js"
 import type { ProductRepository } from "../Product/product-repository.js"
 import type { UserRepository } from "../User/user-repository.js"
+import type { IIdeaService } from "./interfaces/services/iidea-service.js"
 
-export class IdeaService {
+export class IdeaService implements IIdeaService{
 
     constructor(private readonly ideaRepository: IdeaRepository,
         private readonly productRepository: ProductRepository,

@@ -1,8 +1,9 @@
 import type { CartRepository } from "./cart-repository.js"
 import type { ProductRepository } from "../Product/product-repository.js"
 import type { UserRepository } from "../User/user-repository.js"
+import type { ICartService } from "./interfaces/services/icart-service.js"
 
-export class CartService {
+export class CartService implements ICartService{
     constructor(private readonly cartRepository: CartRepository,
         private readonly productRepository: ProductRepository,
         private readonly userRepository: UserRepository

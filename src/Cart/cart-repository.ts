@@ -1,7 +1,8 @@
 import { PoolPromise } from "../utilities/PoolPromiseDB.js";
 import sql from "mssql";
+import type { ICartRepository } from "./interfaces/repositories/icart-repository.js";
 
-export class CartRepository {
+export class CartRepository implements ICartRepository {
     constructor() { }
 
     public async findAll() {

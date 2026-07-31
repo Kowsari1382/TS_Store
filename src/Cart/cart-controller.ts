@@ -2,8 +2,9 @@ import type { NextFunction, Request, Response } from "express";
 import { CartService } from "./cart-service.js";
 import { TryCatchController } from "../utilities/TryCatchController.js";
 import z from "zod";
+import type { ICartController } from "./interfaces/controllers/icart-controller.js";
 
-export class CartController {
+export class CartController implements ICartController {
     constructor(private readonly cartService: CartService) { }
 
     public findAll = TryCatchController(async (req: Request, res: Response, next: NextFunction) => {

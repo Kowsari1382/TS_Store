@@ -2,6 +2,7 @@ import ZarinPal from "zarinpal-node-sdk";
 import type { OrderRepository } from "./order-repository.js";
 import type { CartRepository } from "../Cart/cart-repository.js";
 import type { ProductRepository } from "../Product/product-repository.js";
+import type { IOrderService } from "./interfaces/services/iorder-service.js";
 
 const zarinPal = new ZarinPal.default({
     merchantId: "",
@@ -9,7 +10,7 @@ const zarinPal = new ZarinPal.default({
     sandbox: true
 })
 
-export class OrderService {
+export class OrderService implements IOrderService {
     constructor(private readonly orderRepository: OrderRepository,
         private readonly cartRepository: CartRepository,
         private readonly productRepository: ProductRepository

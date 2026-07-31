@@ -2,8 +2,9 @@ import type { NextFunction, Request, Response } from "express";
 import { IdeaService } from "./idea-service.js";
 import { TryCatchController } from "../utilities/TryCatchController.js";
 import z from "zod";
+import type { IIdeaController } from "./interfaces/controllers/iidea-controller.js";
 
-export class IdeaController{
+export class IdeaController implements IIdeaController{
     
     constructor(private readonly ideaService: IdeaService){}
 

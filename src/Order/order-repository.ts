@@ -1,7 +1,8 @@
 import { PoolPromise } from "../utilities/PoolPromiseDB.js";
 import sql from "mssql";
+import type { IOrderRepository } from "./interfaces/repositories/iorder-repository.js";
 
-export class OrderRepository {
+export class OrderRepository implements IOrderRepository{
 
     constructor() { }
 

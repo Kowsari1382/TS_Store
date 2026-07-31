@@ -1,7 +1,8 @@
 import { PoolPromise } from "../utilities/PoolPromiseDB.js";
 import sql from "mssql";
+import type { IIdeaRepository } from "./interfaces/repositories/iidea-repository.js";
 
-export class IdeaRepository {
+export class IdeaRepository implements IIdeaRepository {
 
     constructor() { }
 
