@@ -1,53 +1,91 @@
-# TS_Store
+# 🛒 TS_Store - TypeScript E-Commerce API
 
-A production-ready, type-safe RESTful API for an e-commerce platform, built with **TypeScript**, **Express.js 5**, and **Microsoft SQL Server**. Designed with **Clean Architecture** principles, it ensures a strict separation of concerns, robust dependency injection, and modern data validation.
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
+[![License](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge)](LICENSE)
 
-## 🚀 Key Features
+A professional, production-ready RESTful API for an e-commerce platform, built with **TypeScript**, **Express.js 5**, and **SQL Server**. This project implements a **clean layered architecture** with full type safety, modern schema validation (Zod), robust error handling, and secure authentication.
 
-- **Clean Layered Architecture**: Strict separation between Routes, Controllers, Services, and Repositories.
-- **Full Type Safety**: Built with strict TypeScript configurations (`noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `verbatimModuleSyntax`).
-- **Dependency Injection**: Loosely coupled components (repositories injected into services, services into controllers) for better testability and maintainability.
-- **Modern Validation**: Utilizes **Zod** for runtime schema validation and static type inference.
-- **Secure Authentication**: JWT-based auth with `bcrypt` password hashing and role-based access control (Admin/User).
-- **Payment Integration**: Seamless integration with the **Zarinpal** payment gateway for order processing.
-- **Performance & Security**: Global express rate limiting, centralized error handling, and parameterized SQL queries to prevent injection attacks.
+---
+
+## 📑 Table of Contents
+
+- [✨ Features](#-features)
+- [🏛️ Architecture](#️-architecture)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📦 Prerequisites](#-prerequisites)
+- [🚀 Installation & Setup](#-installation--setup)
+- [🔧 Environment Variables](#-environment-variables)
+- [📚 API Endpoints Overview](#-api-endpoints-overview)
+- [📁 Project Structure](#-project-structure)
+- [🔒 Security Features](#-security-features)
+- [🤝 Contributing](#-contributing)
+- [👨‍💻 Author](#-author)
+
+---
+
+## ✨ Features
+
+- **🏗️ Clean Layered Architecture**: Strict separation of Controllers, Services, Repositories, and Models for maximum maintainability.
+- **👤 User Management**: Registration, login, JWT-based authentication, role-based access control (Admin/User), and avatar uploads.
+- **📦 Product Management**: Full CRUD operations, multi-image support with pagination, categories, attributes, and stock management.
+- **🛒 Shopping Cart**: Add/remove items, quantity management, and real-time total price calculation.
+- **💳 Order & Payment**: Seamless order placement with **Zarinpal** payment gateway integration and verification callbacks.
+- **💬 Reviews & Ratings**: User-specific product reviews and rating management.
+
+---
+
+## 🏛️ Architecture
+
+The project follows a **Clean Architecture** pattern to ensure maintainability, testability, and separation of concerns:
+
+```text
+HTTP Request 
+    │
+    ▼
+Middleware Layer (Auth, Role Check, Rate Limit, Zod Validation)
+    │
+    ▼
+Controller Layer (Request/Response handling, HTTP status codes)
+    │
+    ▼
+Service Layer (Core business logic and orchestration)
+    │
+    ▼
+Repository Layer (Data access and SQL queries)
+    │
+    ▼
+SQL Server Database
+```
+
+---
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| **Runtime** | Node.js (ES Modules) |
-| **Framework** | Express.js v5 |
-| **Language** | TypeScript (Strict Mode) |
-| **Database** | Microsoft SQL Server (`mssql`) |
-| **Validation** | Zod |
-| **Security** | JWT, Bcrypt, Express Rate Limit |
-| **File Upload** | Multer |
-| **Payment** | Zarinpal Node SDK |
+| Technology | Purpose |
+|------------|---------|
+| **TypeScript** | Strict type safety and modern JavaScript features |
+| **Express.js 5** | Fast, minimalist, and latest-generation web framework |
+| **MSSQL** | Robust relational database management |
+| **Zod** | Schema declaration and validation (TypeScript-first alternative to Joi) |
+| **JWT & Bcrypt** | Secure stateless authentication and password hashing |
+| **Multer** | Middleware for handling `multipart/form-data` (file uploads) |
+| **Zarinpal SDK** | Secure and reliable payment gateway integration |
+| **Express Rate Limit** | API abuse and brute-force prevention |
 
-## 🏗️ Architecture
-
-The project follows a dependency-injected, layered architecture pattern:
-
-```text
-HTTP Request → Route → Controller → Service → Repository → Database
-                   ↑           ↑          ↑
-                (Injected Dependencies)
-```
-
-- **Routes**: Define API endpoints and bind them to controller methods.
-- **Controllers**: Handle the HTTP request/response lifecycle, extract data, and delegate to services.
-- **Services**: Contain core business logic and orchestrate multiple repositories if needed.
-- **Repositories**: Abstract all database interactions and raw SQL queries.
-- **Middlewares**: Handle cross-cutting concerns like authentication, authorization, rate limiting, and global error catching.
+---
 
 ## 📦 Prerequisites
 
-- Node.js (v18 or higher)
-- Microsoft SQL Server (2019 or later)
-- npm or yarn
+Before you begin, ensure you have the following installed on your machine:
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (2019 or later)
+- [Git](https://git-scm.com/)
 
-## ⚙️ Installation & Setup
+---
+
+## 🚀 Installation & Setup
 
 1. **Clone the repository**:
 ```bash
@@ -60,20 +98,22 @@ HTTP Request → Route → Controller → Service → Repository → Database
    npm install
 ```
 
-3. **Configure Environment Variables**:  
-   Create a `.env` file in the root directory and add the following:
-```env
-   Port=3000
-   Domain=localhost
-   DB_SERVER=localhost
-   DB_DATABASE=Shop
-   DB_USER=your_db_username
-   DB_PASSWORD=your_db_password
-   ZARINPAL_MERCHANT_ID=your_zarinpal_merchant_id
-```
+3. **Set up the Database**:
+   - Open SQL Server Management Studio (SSMS).
+   - Attach the provided `Shop.mdf` file located in the root directory, or create the database manually using the schema.
 
-4. **Database Setup**:  
-   Attach the provided `Shop.mdf` file to your SQL Server instance, or run the necessary schema scripts to create the `Shop` database manually.
+4. **Configure Environment Variables**:
+   - Create a `.env` file in the root directory and add the following variables:
+```env
+     PORT=3000
+     DOMAIN=localhost
+     DB_SERVER=localhost
+     DB_DATABASE=Shop
+     DB_USER=your_db_username
+     DB_PASSWORD=your_db_password
+     ZARINPAL_MERCHANT_ID=your_zarinpal_merchant_id
+     JWT_SECRET=your_super_secret_jwt_key
+```
 
 5. **Build and Run**:
 ```bash
@@ -83,60 +123,83 @@ HTTP Request → Route → Controller → Service → Repository → Database
    # Start the production server
    npm start
 ```
-   *(For development with hot-reloading, it is recommended to use `tsx`: `npx tsx src/app.ts`)*
+   *(💡 For development with auto-reload, it is recommended to use: `npx tsx src/app.ts` or `npx ts-node-dev src/app.ts`)*
+
+---
+
+## 📚 API Endpoints Overview
+
+| Module | Base Route | Description |
+|--------|------------|-------------|
+| **Users** | `/api/user` | Registration, login, profile management, admin user operations |
+| **Products** | `/api/product` | CRUD operations, image management, search, and filtering |
+| **Cart** | `/api/cart` | Add/remove items, update quantities, get total price |
+| **Orders** | `/api/order` | Place orders, payment initiation, Zarinpal verification |
+| **Reviews** | `/api/idea` | Submit, update, and retrieve product reviews/ratings |
+
+> 🔐 **Note**: Most endpoints require a valid JWT token in the `Authorization: Bearer <token>` header. Admin-only routes strictly require the `Admin` role.
+
+---
 
 ## 📁 Project Structure
 
 ```text
 TS_Store/
 ├── src/
-│   ├── app.ts                 # Application entry point & middleware setup
-│   ├── controllers/           # HTTP request handlers
-│   ├── services/              # Business logic and orchestration
-│   ├── repositories/          # Data access layer (SQL queries)
-│   ├── routes/                # API route definitions
-│   ├── models/                # TypeScript interfaces and Zod schemas
-│   ├── middlewares/           # Auth, rate limiting, and error handling
-│   └── utilities/             # Helper functions (e.g., TryCatch wrapper)
-├── public/                    # Static assets (e.g., uploaded avatars)
-├── Shop.mdf                   # SQL Server database file
+│   ├── app.ts                  # Application entry point & Express setup
+│   ├── controllers/            # HTTP request/response handlers
+│   ├── services/               # Business logic and orchestration layer
+│   ├── repositories/           # Data access layer (SQL queries)
+│   ├── models/                 # TypeScript interfaces and data models
+│   ├── routes/                 # API route definitions
+│   ├── middlewares/            # Auth, validation, error handling, rate limiting
+│   └── utilities/              # Helper functions (Multer config, TryCatch wrapper)
+├── public/                     # Static assets (e.g., uploaded avatars)
+├── Shop.mdf                    # SQL Server database file
 ├── package.json
-├── tsconfig.json              # Strict TypeScript configuration
-└── .env                       # Environment variables (not in VCS)
+├── tsconfig.json               # Strict TypeScript configuration
+└── .env                        # Environment variables (not committed to Git)
 ```
 
-## 🔌 API Overview
+---
 
-All protected routes require a Bearer token in the headers: `Authorization: Bearer <token>`
+## 🔒 Security Features
 
-| Module | Base Route | Description |
-|--------|------------|-------------|
-| **Users** | `/api/user` | Registration, login, profile management, and admin user operations. |
-| **Products** | `/api/product` | CRUD operations, image management, categorization, and scoring. |
-| **Cart** | `/api/cart` | Add/remove items, quantity adjustments, and total price calculation. |
-| **Orders** | `/api/order` | Order placement, history tracking, and Zarinpal payment verification. |
-| **Reviews** | `/api/idea` | Submit, update, and retrieve product reviews and ratings. |
+- **Authentication**: Stateless JWT-based authentication with secure header validation.
+- **Password Security**: Passwords are hashed using `bcrypt` with configurable salt rounds.
+- **Input Validation**: Strict request validation using **Zod** schemas to prevent malformed data and injection attacks.
+- **Rate Limiting**: Protects sensitive endpoints (like login) from brute-force and DDoS attacks.
+- **Error Handling**: Centralized global error handler (`TryCatchController`) to prevent sensitive stack traces from leaking to the client.
 
-*(For detailed endpoint specifications, refer to the controller files or test with an API client like Postman/Insomnia.)*
-
-## 🔒 Security Highlights
-
-- **Strict Input Validation**: All incoming payloads are validated against Zod schemas before processing.
-- **SQL Injection Prevention**: All database queries use parameterized inputs via the `mssql` driver.
-- **Rate Limiting**: Global rate limiter configured to mitigate brute-force and DDoS attempts.
-- **Centralized Error Handling**: Custom `ErrorHandler` middleware ensures consistent JSON error responses without leaking sensitive stack traces.
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/YourFeature`).
-3. Ensure your code passes all TypeScript strict checks (`npx tsc --noEmit`).
-4. Submit a Pull Request with a clear description of your changes.
+Contributions are what make the open-source community such an amazing place to learn and build. Any contributions you make are **greatly appreciated**.
 
-## 📄 License
-
-This project is licensed under the **ISC License**.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
-Built with ❤️ by [Sajjad Kowsari](https://github.com/Kowsari1382)
+
+## 👨‍💻 Author
+
+**Sajjad Kowsari**  
+- GitHub: [@Kowsari1382](https://github.com/Kowsari1382)
+
+---
+
+## 📝 License
+
+Distributed under the **ISC License**. See `LICENSE` for more information.
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ using TypeScript, Express 5, and Clean Architecture</sub>
+  <br>
+  <strong>If you found this project helpful, please consider giving it a ⭐!</strong>
+</div>
