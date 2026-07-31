@@ -1,8 +1,9 @@
 import fs from "fs";
 import type { ProductRepository } from "./product-repository.js";
 import type { CartRepository } from "../Cart/cart-repository.js";
+import type { IProductService } from "./interfaces/services/iproduct-service.js";
 
-export class ProductService {
+export class ProductService implements IProductService {
     constructor(private readonly productRepository: ProductRepository,
         private readonly cartRepository: CartRepository
     ) { }

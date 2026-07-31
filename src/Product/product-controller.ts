@@ -5,11 +5,12 @@ import z from "zod";
 import path from "path";
 import { fileURLToPath } from 'url';
 import fs from "fs";
+import type { IProductController } from "./interfaces/controllers/iproduct-controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export class ProductController {
+export class ProductController implements IProductController {
     constructor(private readonly productService: ProductService) { }
 
     public findAll = TryCatchController(async (req: Request, res: Response, next: NextFunction) => {

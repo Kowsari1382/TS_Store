@@ -1,7 +1,8 @@
 import { PoolPromise } from "../utilities/PoolPromiseDB.js";
 import sql from "mssql"
+import type { IProductRepository } from "./interfaces/repositories/iproduct-repository.js";
 
-export class ProductRepository {
+export class ProductRepository implements IProductRepository {
     constructor() { }
 
     public async findAll() {

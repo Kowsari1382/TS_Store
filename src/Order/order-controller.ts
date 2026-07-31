@@ -2,8 +2,9 @@ import type { NextFunction, Request, Response } from "express";
 import { OrderService } from "./order-service.js";
 import { TryCatchController } from "../utilities/TryCatchController.js";
 import z from "zod";
+import type { IOrderController } from "./interfaces/controllers/iorder-controller.js";
 
-export class OrderController{
+export class OrderController implements IOrderController{
     constructor(private readonly orderService: OrderService){}
     
     public findAll = TryCatchController(async (req: Request, res: Response, next: NextFunction) => {
