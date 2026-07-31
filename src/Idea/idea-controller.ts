@@ -1,15 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
-import { IdeaService } from "./idea-service.js";
 import { TryCatchController } from "../utilities/TryCatchController.js";
 import z from "zod";
 import type { IIdeaController } from "./interfaces/controllers/iidea-controller.js";
+import type { IIdeaService } from "./interfaces/services/iidea-service.js";
 
 export class IdeaController implements IIdeaController{
     
-    constructor(private readonly ideaService: IdeaService){}
+    constructor(private readonly IideaService: IIdeaService){}
 
     public findAll = TryCatchController(async (req: Request, res: Response, next: NextFunction) => {
-        const ideas = await this.ideaService.findAll()
+        const ideas = await this.IideaService.findAll()
         res.send(ideas)
     })
 
@@ -19,7 +19,7 @@ export class IdeaController implements IIdeaController{
         }
         const parsed = z.object(schema).safeParse(req.params)
         if(!parsed.success) return res.status(400).send(parsed.error.issues)
-        const ideas = await this.ideaService.findByID(parsed.data.id)
+        const ideas = await this.IideaService.findByID(parsed.data.id)
         res.send(ideas)
     })
 
@@ -29,7 +29,7 @@ export class IdeaController implements IIdeaController{
         }
         const parsed = z.object(schema).safeParse(req.params)
         if(!parsed.success) return res.status(400).send(parsed.error.issues)
-        const ideas = await this.ideaService.findByUserID(parsed.data.id)
+        const ideas = await this.IideaService.findByUserID(parsed.data.id)
         res.send(ideas)
     })
 
@@ -39,7 +39,7 @@ export class IdeaController implements IIdeaController{
         }
         const parsed = z.object(schema).safeParse(req.params)
         if(!parsed.success) return res.status(400).send(parsed.error.issues)
-        const ideas = await this.ideaService.findByProductID(parsed.data.id)
+        const ideas = await this.IideaService.findByProductID(parsed.data.id)
         res.send(ideas)
     })
 
@@ -50,7 +50,7 @@ export class IdeaController implements IIdeaController{
         }
         const parsed = z.object(schema).safeParse(req.params)
         if(!parsed.success) return res.status(400).send(parsed.error.issues)
-        const idea = await this.ideaService.findByUserProductID(parsed.data.userid, parsed.data.productid)
+        const idea = await this.IideaService.findByUserProductID(parsed.data.userid, parsed.data.productid)
         res.send(idea)
     })
 
@@ -64,7 +64,7 @@ export class IdeaController implements IIdeaController{
         const parsed = z.object(schema).safeParse(req.body)
         if(!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.UserID) return res.status(403).send("Access is denied.")
-        const result = await this.ideaService.Add(parsed.data)
+        const result = await this.IideaService.Add(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 
@@ -79,7 +79,7 @@ export class IdeaController implements IIdeaController{
         const parsed = z.object(schema).safeParse(req.body)
         if(!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.UserID) return res.status(403).send("Access is denied.")
-        const result = await this.ideaService.Update(parsed.data)
+        const result = await this.IideaService.Update(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 
@@ -92,7 +92,7 @@ export class IdeaController implements IIdeaController{
         const parsed = z.object(schema).safeParse(req.body)
         if(!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.UserID) return res.status(403).send("Access is denied.")
-        const result = await this.ideaService.Delete(parsed.data)
+        const result = await this.IideaService.Delete(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 

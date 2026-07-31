@@ -1,18 +1,18 @@
 import express from "express";
-import { OrderController } from "./order-controller.js";
 import { CheckAuth } from "../middlewares/CheckAuth.js";
 import { CheckAdmin } from "../middlewares/CheckAdmin.js";
+import type { IOrderController } from "./interfaces/controllers/iorder-controller.js";
 const router = express.Router()
 
-export const orders = (controller: OrderController) => {
+export const orders = (Icontroller: IOrderController) => {
 
-    router.get("/all", CheckAuth, CheckAdmin, controller.findAll)
-    router.get("/userid/:id", CheckAuth, controller.findByUserID)
-    router.get("/productid/:id", CheckAuth, CheckAdmin, controller.findByProductID)
-    // router.get("/verify", controller.Verify)
-    router.post("/add", CheckAuth, controller.Add)
-    router.put("/update", CheckAuth, CheckAdmin, controller.Update)
-    router.delete("/delete/:id", CheckAuth, CheckAdmin, controller.Delete)
+    router.get("/all", CheckAuth, CheckAdmin, Icontroller.findAll)
+    router.get("/userid/:id", CheckAuth, Icontroller.findByUserID)
+    router.get("/productid/:id", CheckAuth, CheckAdmin, Icontroller.findByProductID)
+    // router.get("/verify", Icontroller.Verify)
+    router.post("/add", CheckAuth, Icontroller.Add)
+    router.put("/update", CheckAuth, CheckAdmin, Icontroller.Update)
+    router.delete("/delete/:id", CheckAuth, CheckAdmin, Icontroller.Delete)
 
     return router;
 }

@@ -1,8 +1,8 @@
 import ZarinPal from "zarinpal-node-sdk";
-import type { OrderRepository } from "./order-repository.js";
-import type { CartRepository } from "../Cart/cart-repository.js";
-import type { ProductRepository } from "../Product/product-repository.js";
 import type { IOrderService } from "./interfaces/services/iorder-service.js";
+import type { IOrderRepository } from "./interfaces/repositories/iorder-repository.js";
+import type { ICartRepository } from "../Cart/interfaces/repositories/icart-repository.js";
+import type { IProductRepository } from "../Product/interfaces/repositories/iproduct-repository.js";
 
 const zarinPal = new ZarinPal.default({
     merchantId: "",
@@ -11,39 +11,39 @@ const zarinPal = new ZarinPal.default({
 })
 
 export class OrderService implements IOrderService {
-    constructor(private readonly orderRepository: OrderRepository,
-        private readonly cartRepository: CartRepository,
-        private readonly productRepository: ProductRepository
+    constructor(private readonly IorderRepository: IOrderRepository,
+        private readonly IcartRepository: ICartRepository,
+        private readonly IproductRepository: IProductRepository
     ) { }
 
     public async findAll() {
-        return await this.orderRepository.findAll()
+        return await this.IorderRepository.findAll()
     }
 
     public async findByUserID(userid: number) {
-        return await this.orderRepository.findByUserID(userid)
+        return await this.IorderRepository.findByUserID(userid)
     }
 
     public async findByProductID(productid: number) {
-        return await this.orderRepository.findByProductID(productid)
+        return await this.IorderRepository.findByProductID(productid)
     }
 
     public async Add(userid: number) {
-        const userCart = await this.cartRepository.findByUserID(userid)
+        const userCart = await this.IcartRepository.findByUserID(userid)
         if (!userCart || userCart.length === 0) return { Status: 400, Message: "There is not cart for this user." }
-        const totalPrice = await this.cartRepository.findTotalPrice(userid)
+        const totalPrice = await this.IcartRepository.findTotalPrice(userid)
         //Payment is here
-        await this.orderRepository.AddForUser(userid)
-        await this.cartRepository.Reset(userid)
-        await this.cartRepository.Clean()
-        await this.productRepository.Reset(userid)
-        await this.cartRepository.DeleteByUserID(userid)
+        await this.IorderRepository.AddForUser(userid)
+        await this.IcartRepository.Reset(userid)
+        await this.IcartRepository.Clean()
+        await this.IproductRepository.Reset(userid)
+        await this.IcartRepository.DeleteByUserID(userid)
         return { Status: 200, Message: "Adding was successful." }
     }
 
     // public async Add(userid: number) {
-    //     const cartRepository = new CartRepository()
-    //     const cartService = new CartService(cartRepository)
+    //     const IcartRepository = new IcartRepository()
+    //     const cartService = new CartService(IcartRepository)
     //     const userCart = await cartService.findByUserID(userid)
     //     if (!userCart || userCart.length === 0) return { Status: 400, Message: "There is not cart for this user." }
     //     const totalPrice = await cartService.findTotalPrice(userid)
@@ -52,26 +52,26 @@ export class OrderService implements IOrderService {
     //         description: "پرداخت خرید محصولات",
     //         callback_url: `http://localhost:3000/api/order/verify`
     //     })
-    //     await this.orderRepository.AddPayment(response.data.authority, userid, totalPrice![0].TotalPrice)
+    //     await this.IorderRepository.AddPayment(response.data.authority, userid, totalPrice![0].TotalPrice)
     //     return { Status: 200, Message: "OK", Zarinpal: zarinPal, Response: response }
     // }
 
     // public async Verify(authority: string) {
-    //     const cartRepository = new CartRepository()
-    //     const cartService = new CartService(cartRepository)
-    //     const productRepository = new ProductRepository()
-    //     const productService = new ProductService(productRepository)
-    //     const payment = await this.orderRepository.findPayment(authority)
+    //     const IcartRepository = new IcartRepository()
+    //     const cartService = new CartService(IcartRepository)
+    //     const IproductRepository = new IproductRepository()
+    //     const productService = new ProductService(IproductRepository)
+    //     const payment = await this.IorderRepository.findPayment(authority)
     //     if (!payment || payment.length === 0) return { Status: 400, Message: "There is not payment for this user" }
     //     const response = await zarinPal.verifications.verify({
     //         amount: payment[0].TotalPrice,
     //         authority: authority
     //     })
     //     if (response.data.code !== 100 && response.data.code !== 101) {
-    //         await this.orderRepository.DeletePayment(authority)
+    //         await this.IorderRepository.DeletePayment(authority)
     //         return { Status: 400, Message: "Verifying failed." }
     //     }
-    //     await this.orderRepository.AddForUser(payment[0].UserID)
+    //     await this.IorderRepository.AddForUser(payment[0].UserID)
     //     await cartService.Reset(payment[0].UserID)
     //     await cartService.Clean()
     //     await productService.Reset(payment[0].UserID)
@@ -80,16 +80,16 @@ export class OrderService implements IOrderService {
     // }
 
     public async Update(orderInfo: any) {
-        const userOrder = await this.orderRepository.findByUserID(orderInfo.UserID)
+        const userOrder = await this.IorderRepository.findByUserID(orderInfo.UserID)
         if (!userOrder || userOrder.length === 0) return { Status: 400, Message: "There is not order for this user." }
-        await this.orderRepository.Update(orderInfo.ID, orderInfo.UserID, orderInfo.ProductID, orderInfo.Number, orderInfo.TotalPrice, orderInfo.State)
+        await this.IorderRepository.Update(orderInfo.ID, orderInfo.UserID, orderInfo.ProductID, orderInfo.Number, orderInfo.TotalPrice, orderInfo.State)
         return { Status: 200, Message: "Updating was successful." }
     }
 
     public async Delete(id: number) {
-        const userOrder = await this.orderRepository.findByUserID(id)
+        const userOrder = await this.IorderRepository.findByUserID(id)
         if (!userOrder || userOrder.length === 0) return { Status: 400, Message: "There is not order for this user." }
-        await this.orderRepository.Delete(id)
+        await this.IorderRepository.Delete(id)
         return { Status: 200, Message: "Deleting was successful." }
     }
 

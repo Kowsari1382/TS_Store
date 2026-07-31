@@ -1,14 +1,14 @@
 import type { NextFunction, Request, Response } from "express";
-import { CartService } from "./cart-service.js";
 import { TryCatchController } from "../utilities/TryCatchController.js";
 import z from "zod";
 import type { ICartController } from "./interfaces/controllers/icart-controller.js";
+import type { ICartService } from "./interfaces/services/icart-service.js";
 
 export class CartController implements ICartController {
-    constructor(private readonly cartService: CartService) { }
+    constructor(private readonly IcartService: ICartService) { }
 
     public findAll = TryCatchController(async (req: Request, res: Response, next: NextFunction) => {
-        const carts = await this.cartService.findAll()
+        const carts = await this.IcartService.findAll()
         res.send(carts)
     })
 
@@ -19,7 +19,7 @@ export class CartController implements ICartController {
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.id) return res.status(403).send("Access is denied.")
-        const carts = await this.cartService.findByUserID(parsed.data.id)
+        const carts = await this.IcartService.findByUserID(parsed.data.id)
         res.send(carts)
     })
 
@@ -29,7 +29,7 @@ export class CartController implements ICartController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const carts = await this.cartService.findByProductID(parsed.data.id)
+        const carts = await this.IcartService.findByProductID(parsed.data.id)
         res.send(carts)
     })
 
@@ -40,7 +40,7 @@ export class CartController implements ICartController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const carts = await this.cartService.findByUserProductID(parsed.data.userid, parsed.data.productid)
+        const carts = await this.IcartService.findByUserProductID(parsed.data.userid, parsed.data.productid)
         res.send(carts)
     })
 
@@ -53,7 +53,7 @@ export class CartController implements ICartController {
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.UserID) return res.status(403).send("Access is denied.")
-        const result = await this.cartService.Add(parsed.data)
+        const result = await this.IcartService.Add(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 
@@ -66,7 +66,7 @@ export class CartController implements ICartController {
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.UserID) return res.status(403).send("Access is denied.")
-        const result = await this.cartService.Minus(parsed.data)
+        const result = await this.IcartService.Minus(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 
@@ -78,7 +78,7 @@ export class CartController implements ICartController {
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.UserID) return res.status(403).send("Access is denied.")
-        const result = await this.cartService.Delete(parsed.data)
+        const result = await this.IcartService.Delete(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 
@@ -89,7 +89,7 @@ export class CartController implements ICartController {
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
         if (req.UserData.Role !== "Admin" && req.UserData.ID != parsed.data.id) return res.status(403).send("Access is denied.")
-        const result = await this.cartService.DeleteByUserID(parsed.data.id)
+        const result = await this.IcartService.DeleteByUserID(parsed.data.id)
         res.status(result.Status).send(result.Message)
     })
 
@@ -99,7 +99,7 @@ export class CartController implements ICartController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const result = await this.cartService.DeleteByProductID(parsed.data.id)
+        const result = await this.IcartService.DeleteByProductID(parsed.data.id)
         res.status(result.Status).send(result.Message)
     })
 
