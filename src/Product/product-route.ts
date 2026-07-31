@@ -1,5 +1,5 @@
 import express from "express";
-import { ProductController } from "../Product/product-controller.js";
+import { ProductController } from "./product-controller.js";
 import { CheckAdmin } from "../middlewares/CheckAdmin.js";
 import { CheckAuth } from "../middlewares/CheckAuth.js";
 import { image } from "../utilities/multer.js";

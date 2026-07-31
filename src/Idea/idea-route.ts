@@ -1,5 +1,5 @@
 import express from "express";
-import { IdeaController } from "../Idea/idea-controller.js";
+import { IdeaController } from "./idea-controller.js";
 import { CheckAuth } from "../middlewares/CheckAuth.js";
 const router = express.Router()
 
