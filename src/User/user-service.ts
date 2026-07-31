@@ -1,15 +1,15 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv";
-import type { CartRepository } from "../Cart/cart-repository.js";
 import type { IUserService } from "./interfaces/services/iuser-service.js";
 import type { IUserRepository } from "./interfaces/repositories/iuser-repository.js";
+import type { ICartRepository } from "../Cart/interfaces/repositories/icart-repository.js";
 dotenv.config()
 
 export class UserService implements IUserService {
 
     constructor(private readonly IuserRepository: IUserRepository,
-        private readonly cartRepository: CartRepository
+        private readonly IcartRepository: ICartRepository
     ) { }
 
     public async findAll() {
@@ -80,7 +80,7 @@ export class UserService implements IUserService {
         const user = await this.IuserRepository.findByID(id)
         if (!user || user.length === 0) return { Status: 400, Message: "User does not exist." }
         await this.IuserRepository.Delete(id)
-        await this.cartRepository.DeleteByUserID(id)
+        await this.IcartRepository.DeleteByUserID(id)
         await this.IuserRepository.DeleteAvatar(id)
         return { Status: 200, Message: "Delete was successful." }
     }

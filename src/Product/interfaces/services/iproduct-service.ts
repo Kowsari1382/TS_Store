@@ -8,6 +8,7 @@ export interface IProductService {
     Add(productInfo: any): any;
     Update(productInfo: any): any;
     setScore(id: number, score: number): any;
+    Delete(id: number): any;
     Reset(userid: number): any;
     findImgByProductIDPageNumber(productid: number, pagenumber: number): any;
     findSomeImgByProductID(productid: number): any;

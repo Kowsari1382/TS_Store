@@ -1,20 +1,20 @@
 import type { NextFunction, Request, Response } from "express";
-import type { ProductService } from "./product-service.js";
 import { TryCatchController } from "../utilities/TryCatchController.js";
 import z from "zod";
 import path from "path";
 import { fileURLToPath } from 'url';
 import fs from "fs";
 import type { IProductController } from "./interfaces/controllers/iproduct-controller.js";
+import type { IProductService } from "./interfaces/services/iproduct-service.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export class ProductController implements IProductController {
-    constructor(private readonly productService: ProductService) { }
+    constructor(private readonly IproductService: IProductService) { }
 
     public findAll = TryCatchController(async (req: Request, res: Response, next: NextFunction) => {
-        const products = await this.productService.findAll()
+        const products = await this.IproductService.findAll()
         res.send(products)
     })
 
@@ -24,7 +24,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const product = await this.productService.findByID(parsed.data.id)
+        const product = await this.IproductService.findByID(parsed.data.id)
         res.send(product)
     })
 
@@ -34,7 +34,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const imgs = await this.productService.findSomeImgByProductID(parsed.data.id)
+        const imgs = await this.IproductService.findSomeImgByProductID(parsed.data.id)
         res.send(imgs)
     })
 
@@ -45,7 +45,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const result = await this.productService.findImgByProductIDPageNumber(parsed.data.id, parsed.data.pagenumber)
+        const result = await this.IproductService.findImgByProductIDPageNumber(parsed.data.id, parsed.data.pagenumber)
         if (result.Status === 200) return res.status(result.Status).sendFile(path.join(__dirname, "../../", result.Path))
         res.status(result.Status).send(result.Message)
     })
@@ -56,7 +56,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const attrs = await this.productService.findByProductIDAttributes(parsed.data.id)
+        const attrs = await this.IproductService.findByProductIDAttributes(parsed.data.id)
         res.send(attrs)
     })
 
@@ -66,7 +66,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const product = await this.productService.findByProductname(parsed.data.productname)
+        const product = await this.IproductService.findByProductname(parsed.data.productname)
         res.send(product)
     })
 
@@ -76,7 +76,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const product = await this.productService.findByCategory(parsed.data.category)
+        const product = await this.IproductService.findByCategory(parsed.data.category)
         res.send(product)
     })
 
@@ -92,7 +92,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const result = await this.productService.Add(parsed.data)
+        const result = await this.IproductService.Add(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 
@@ -109,7 +109,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const result = await this.productService.Update(parsed.data)
+        const result = await this.IproductService.Update(parsed.data)
         res.status(result.Status).send(result.Message)
     })
 
@@ -120,7 +120,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const result = await this.productService.setScore(parsed.data.ID, parsed.data.Score)
+        const result = await this.IproductService.setScore(parsed.data.ID, parsed.data.Score)
         res.status(result.Status).send(result.Message)
     })
 
@@ -130,7 +130,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const result = await this.productService.Delete(parsed.data.id)
+        const result = await this.IproductService.Delete(parsed.data.id)
         res.status(result.Status).send(result.Message)
     })
 
@@ -142,7 +142,7 @@ export class ProductController implements IProductController {
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
         if (!req.file) return res.status(400).send("Image does not exist.")
-        const result = await this.productService.AddImg(parsed.data.ProductID, parsed.data.PageNumber, parsed.data.ProductID + parsed.data.PageNumber + path.extname(req.file.originalname))
+        const result = await this.IproductService.AddImg(parsed.data.ProductID, parsed.data.PageNumber, parsed.data.ProductID + parsed.data.PageNumber + path.extname(req.file.originalname))
         if (result.Status !== 200) return res.status(result.Status).send(result.Message)
         fs.writeFile(result.Path!, req.file.buffer, (err) => {
             console.log(err)
@@ -158,7 +158,7 @@ export class ProductController implements IProductController {
         const parsed = z.object(schema).safeParse(req.body)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
         if (!req.file) return res.status(400).send("Image does not exist.")
-        const result = await this.productService.UpdateImg(parsed.data.ProductID, parsed.data.PageNumber, parsed.data.ProductID + parsed.data.PageNumber + path.extname(req.file.originalname))
+        const result = await this.IproductService.UpdateImg(parsed.data.ProductID, parsed.data.PageNumber, parsed.data.ProductID + parsed.data.PageNumber + path.extname(req.file.originalname))
         if (result.Status !== 200) return res.status(result.Status).send(result.Message)
         fs.writeFile(result.Path!, req.file.buffer, (err) => {
             console.log(err)
@@ -173,7 +173,7 @@ export class ProductController implements IProductController {
         }
         const parsed = z.object(schema).safeParse(req.params)
         if (!parsed.success) return res.status(400).send(parsed.error.issues)
-        const result = await this.productService.DeleteImg(parsed.data.productid, parsed.data.pagenumber)
+        const result = await this.IproductService.DeleteImg(parsed.data.productid, parsed.data.pagenumber)
         res.status(result.Status).send(result.Message)
     })
 
